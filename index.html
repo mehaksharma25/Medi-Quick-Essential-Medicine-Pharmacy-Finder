@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Basic document setup -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medi-Quick | Essential Medicine Finder</title>
+
+  <!-- Premium but readable font pairing -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- Main stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="topbar">
+    <div class="topbar-inner">
+      <a class="brand-mark" href="#" aria-label="Medi-Quick home">
+        <span class="brand-icon"><i class="fa-solid fa-shield-heart"></i></span>
+        <span class="brand-text">
+          <strong>Medi-Quick</strong>
+          <small>Essential Medicine Finder</small>
+        </span>
+      </a>
+
+      <div class="nav-tools">
+        <div class="search-field">
+          <span class="search-glow" aria-hidden="true"></span>
+          <span class="search-icon" aria-hidden="true"><i class="fa-solid fa-magnifying-glass"></i></span>
+          <input
+            id="searchInput"
+            type="search"
+            placeholder="Search medicines, generic names, or indications..."
+            autocomplete="off"
+          >
+        </div>
+        <div class="suggestion-list" id="suggestionList"></div>
+      </div>
+
+      <button id="darkModeToggle" class="theme-toggle" type="button" aria-label="Toggle dark mode">
+        <i class="fa-solid fa-moon"></i>
+        <span>Dark</span>
+      </button>
+    </div>
+  </nav>
+
+  <main class="app-shell">
+    <section class="feature-strip">
+      <article class="feature-chip"><i class="fa-solid fa-sparkles"></i><span>Smart suggestions</span></article>
+      <article class="feature-chip"><i class="fa-solid fa-tags"></i><span>Health tags</span></article>
+      <article class="feature-chip"><i class="fa-solid fa-circle-half-stroke"></i><span>Dark mode</span></article>
+      <article class="feature-chip"><i class="fa-solid fa-clock-rotate-left"></i><span>Search history</span></article>
+    </section>
+
+    <!-- Hero / app introduction -->
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Trusted medicine discovery</p>
+        <h1>Medi-Quick</h1>
+        <p class="hero-text">
+          Search, compare, and understand medicine labels from verified openFDA records
+          through a faster, cleaner, healthcare-focused experience.
+        </p>
+        <div class="hero-status">
+          <span class="pulse-dot"></span>
+          <span>Live medicine label intelligence powered by openFDA</span>
+        </div>
+      </div>
+
+      <div class="hero-panel">
+        <div class="hero-panel-header">
+          <p class="panel-label">System snapshot</p>
+          <div class="medical-cross" aria-hidden="true"></div>
+        </div>
+
+        <div class="hero-metrics">
+          <article>
+            <span class="metric-label">Fetched</span>
+            <strong id="recordCount">0</strong>
+          </article>
+          <article>
+            <span class="metric-label">Visible</span>
+            <strong id="visibleCount">0</strong>
+          </article>
+          <article>
+            <span class="metric-label">Saved</span>
+            <strong id="savedCount">0</strong>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main search and filter controls -->
+    <section class="control-panel">
+      <div class="control-grid">
+        <div class="control-card">
+          <label for="sortSelect">Sort results</label>
+          <select id="sortSelect">
+            <option value="relevance">Best Match</option>
+            <option value="az">Name: A to Z</option>
+            <option value="za">Name: Z to A</option>
+          </select>
+        </div>
+
+        <div class="control-card">
+          <label for="usageInput">Filter by usage keyword</label>
+          <input
+            id="usageInput"
+            type="search"
+            placeholder="Try pain, cough, allergy..."
+            autocomplete="off"
+          >
+        </div>
+      </div>
+
+      <div class="filter-block">
+        <span class="control-label">Filter by category</span>
+        <div class="chip-group" id="categoryChips"></div>
+      </div>
+
+      <div class="filter-block">
+        <span class="control-label">Health tags</span>
+        <div class="chip-group" id="keywordChips"></div>
+      </div>
+    </section>
+
+    <!-- System feedback -->
+    <section class="status-strip">
+      <p id="statusMessage">Preparing medicine records...</p>
+    </section>
+
+    <!-- Saved and recent sections -->
+    <section class="dashboard-grid">
+      <article class="dashboard-panel">
+        <div class="section-heading compact">
+          <div>
+            <p class="section-kicker">Favorites</p>
+            <h2>Favorites dashboard</h2>
+          </div>
+        </div>
+        <div class="mini-list" id="savedList"></div>
+      </article>
+
+      <article class="dashboard-panel">
+        <div class="section-heading compact">
+          <div>
+            <p class="section-kicker">Recent</p>
+            <h2>Recently viewed</h2>
+          </div>
+        </div>
+        <div class="mini-list" id="recentList"></div>
+      </article>
+
+      <article class="dashboard-panel">
+        <div class="section-heading compact">
+          <div>
+            <p class="section-kicker">Searches</p>
+            <h2>Search history</h2>
+          </div>
+        </div>
+        <div class="mini-list" id="historyList"></div>
+      </article>
+    </section>
+
+    <!-- Results area -->
+    <section class="results-section">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">Medicine results</p>
+          <h2>Essential medicine directory</h2>
+        </div>
+      </div>
+      <div class="results-grid" id="resultsGrid" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <!-- Reusable medicine card -->
+  <template id="medicineCardTemplate">
+    <article class="medicine-card">
+      <div class="card-top">
+        <span class="category-badge"></span>
+        <button class="save-button" type="button"></button>
+      </div>
+
+      <h3 class="medicine-title"></h3>
+      <p class="generic-name"></p>
+      <div class="tag-row"></div>
+      <p class="indication-text"></p>
+
+      <div class="medicine-extra">
+        <p class="detail-line"><strong>Category:</strong> <span class="detail-category"></span></p>
+        <p class="detail-line"><strong>Usage tags:</strong> <span class="detail-tags"></span></p>
+        <p class="detail-line"><strong>Search summary:</strong> <span class="detail-summary"></span></p>
+      </div>
+
+      <button class="expand-button" type="button">Show More</button>
+    </article>
+  </template>
+
+  <!-- Main application script -->
+  <script src="script.js"></script>
+</body>
+</html>
