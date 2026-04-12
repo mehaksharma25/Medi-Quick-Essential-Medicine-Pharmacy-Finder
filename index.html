@@ -1,106 +1,18 @@
-!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Medi-Quick | Essential Medicine Finder</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap"
-      rel="stylesheet"
+    <meta
+      name="description"
+      content="Medi-Quick helps users search essential medicines, review indications, and filter results using live openFDA data."
     />
-    <link rel="stylesheet" href="style.css" />
+    <title>Medi-Quick | Essential Medicine Finder</title>
+    <link rel="preconnect" href="https://api.fda.gov" />
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./script.js" defer></script>
   </head>
   <body>
-    <div class="page-shell">
-      <header class="hero">
-        <nav class="topbar">
-          <span class="brand-badge">Medi-Quick</span>
-          <span class="status-pill">Live openFDA medicine data</span>
-        </nav>
-
-        <div class="hero-copy">
-          <p class="eyebrow">Essential Medicine Finder</p>
-          <h1>Search verified medicine labels faster and with less guesswork.</h1>
-          <p class="hero-text">
-            Explore real-time drug label data from the openFDA API, search by
-            medicine name, and narrow results by category to understand what a
-            medication is commonly used for.
-          </p>
-        </div>
-
-        <section class="controls-panel" aria-label="Medicine filters">
-          <label class="input-group">
-            <span>Search medicine</span>
-            <input
-              id="searchInput"
-              type="search"
-              placeholder="Try ibuprofen, insulin, aspirin..."
-              autocomplete="off"
-            />
-          </label>
-
-          <label class="input-group">
-            <span>Filter by category</span>
-            <select id="categorySelect">
-              <option value="all">All categories</option>
-            </select>
-          </label>
-        </section>
-
-        <section class="stats-grid" aria-label="Data overview">
-          <article class="stat-card">
-            <p>Total medicines</p>
-            <strong id="totalCount">0</strong>
-          </article>
-          <article class="stat-card">
-            <p>Visible results</p>
-            <strong id="visibleCount">0</strong>
-          </article>
-          <article class="stat-card">
-            <p>Categories</p>
-            <strong id="categoryCount">0</strong>
-          </article>
-        </section>
-      </header>
-
-      <main>
-        <section class="status-banner" id="statusBanner" aria-live="polite">
-          Loading medicine data...
-        </section>
-
-        <section
-          id="medicineGrid"
-          class="medicine-grid"
-          aria-live="polite"
-          aria-label="Medicine search results"
-        ></section>
-      </main>
-    </div>
-
-    <template id="medicineCardTemplate">
-      <article class="medicine-card">
-        <div class="card-top">
-          <div>
-            <p class="card-label">Brand name</p>
-            <h2 class="medicine-title"></h2>
-          </div>
-          <span class="category-chip"></span>
-        </div>
-
-        <div class="meta-group">
-          <p class="meta-label">Generic name</p>
-          <p class="generic-name"></p>
-        </div>
-
-        <div class="meta-group">
-          <p class="meta-label">Indications for use</p>
-          <p class="indications"></p>
-        </div>
-      </article>
-    </template>
-
-    <script src="script.js"></script>
+    <div id="app"></div>
   </body>
 </html>
